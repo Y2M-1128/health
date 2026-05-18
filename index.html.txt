@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园便民工具 | 大学生校园健康打卡平台</title>
+    <style>
+        *{margin: 0;padding: 0;box-sizing: border-box;font-family: "微软雅黑", sans-serif;}
+        body{background: #f0f4ff;padding: 20px;line-height: 1.6;}
+        .container{max-width: 600px;margin: 0 auto;background: white;border-radius: 15px;padding: 30px;box-shadow: 0 5px 15px #cce0ff;}
+        h1{text-align: center;color: #2563eb;margin-bottom: 20px;font-size: 22px;}
+        .box{margin: 15px 0;padding: 15px;border: 1px solid #e2eaff;border-radius: 10px;}
+        h3{color: #1e40af;margin-bottom: 10px;}
+        button{width: 100%;padding: 12px;background: #2563eb;color: white;border: none;border-radius: 8px;font-size: 16px;margin-top: 10px;cursor: pointer;transition: all 0.3s ease;}
+        button:hover{background:#1d4ed8;}
+        button:active{transform: scale(0.98);}
+        .tip{color: #666;margin-top: 20px;text-align: center;font-size: 14px;}
+        .hide{display: none;margin-top:10px;padding:10px;background:#f8faff;border-radius:6px;}
+        /* 新增：打卡成功提示样式 */
+        #msg {
+            margin-top: 10px;
+            color: #16a34a;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>大学生校园健康打卡平台</h1>
+        <div class="box">
+            <h3>📌 项目功能</h3>
+            <p>1. 每日健康状态快速登记</p>
+            <p>2. 校园防疫常识科普查询</p>
+            <p>3. 校园应急就医指引服务</p>
+        </div>
+
+        <div class="box">
+            <h3>🖱️ 在线打卡</h3>
+            <button onclick="clock()">一键今日健康打卡</button>
+            <p id="msg"></p>
+        </div>
+
+        <!-- 新增：防疫常识科普板块 -->
+        <div class="box">
+            <h3>📖 防疫常识科普</h3>
+            <p>内置防疫知识库与每日健康小贴士，AI智能整理图文、短视频健康资讯，推送权威防疫知识，助力学生提升日常健康素养。</p>
+            <button onclick="showKnow()">查看今日健康科普</button>
+            <div id="knowText" class="hide">
+                <p>💡健康小贴士：勤通风、常洗手，减少人群聚集，换季注意增减衣物，规律作息增强自身免疫力。</p>
+                <p>📚防疫知识库：涵盖校园传染病预防、日常卫生习惯、四季养生知识等权威内容。</p>
+            </div>
+        </div>
+
+        <!-- 新增：应急就医指引板块 -->
+        <div class="box">
+            <h3>🏥 应急就医指引</h3>
+            <p>支持身体不适症状自查，系统智能匹配推荐校外定点就医医院，一键查看医院地址、联系电话、导航路线与校园紧急联系人信息，解决学生就医迷茫难题。</p>
+            <button onclick="showHospital()">进入就医指引</button>
+            <div id="hosText" class="hide">
+                <p>📍定点医院：校园周边综合医院</p>
+                <p>📞咨询电话：0XXX-XXXXXXX</p>
+                <p>🗺️支持一键导航直达</p>
+                <p>🆘校园紧急联系人：辅导员+校医双渠道联络</p>
+            </div>
+        </div>
+
+        <div class="tip">手机扫码即可全程使用 · 自适应手机屏幕</div>
+    </div>
+    <script>
+        // 健康打卡（新增本地存储，避免重复打卡）
+        function clock(){
+            const today = new Date().toLocaleDateString();
+            const lastClockDate = localStorage.getItem("lastClockDate");
+            const msgEl = document.getElementById("msg");
+            
+            if (lastClockDate === today) {
+                msgEl.innerText = "⚠️ 今日已打卡，无需重复提交";
+                msgEl.style.color = "#ca8a04";
+            } else {
+                localStorage.setItem("lastClockDate", today);
+                msgEl.innerText = "✅ 打卡成功！今日健康状态已登记";
+                msgEl.style.color = "#16a34a";
+            }
+        }
+        // 显示防疫科普
+        function showKnow(){
+            let know = document.getElementById("knowText");
+            know.style.display = know.style.display === "block" ? "none" : "block";
+        }
+        // 显示就医指引
+        function showHospital(){
+            let hos = document.getElementById("hosText");
+            hos.style.display = hos.style.display === "block" ? "none" : "block";
+        }
+        // 页面加载时，检查今日是否已打卡
+        window.onload = function() {
+            const today = new Date().toLocaleDateString();
+            const lastClockDate = localStorage.getItem("lastClockDate");
+            if (lastClockDate === today) {
+                document.getElementById("msg").innerText = "今日已打卡，无需重复提交";
+                document.getElementById("msg").style.color = "#ca8a04";
+            }
+        }
+    </script>
+</body>
+</html>
